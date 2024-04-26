@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { app } from "firebaseApp";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Router from "./components/Router";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "components/Loader";
+import ThemeContext from "context/ThemeContext";
 
 function App() {
+  const context = useContext(ThemeContext);
   const auth = getAuth(app);
   // auth 현재 사용자 있으면 authenticated 변경
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
@@ -27,10 +29,10 @@ function App() {
   }, [auth]);
 
   return (
-    <>
+    <div className={context.theme === "light" ? "white" : "dark"}>
       <ToastContainer />
       {init ? <Router isAuthenticated={isAuthenticated} /> : <Loader />}
-    </>
+    </div>
   );
 }
 
